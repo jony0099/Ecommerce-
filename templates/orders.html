@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your Orders</h2>
+{% if orders %}
+<div class="row">
+    {% for order in orders %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>Order #{{ order.id }}</h5>
+                <p>Date: {{ order.date.strftime('%Y-%m-%d') }}</p>
+                <p>Total: ${{ "%.2f"|format(order.total) }}</p>
+                <h6>Items:</h6>
+                <ul class="list-unstyled">
+                    {% for item in order.items %}
+                    <li>{{ item.product.name }} x {{ item.quantity }} (${{ "%.2f"|format(item.price) }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No orders yet. <a href="{{ url_for('home') }}">Start shopping</a></p>
+{% endif %}
+{% endblock %}

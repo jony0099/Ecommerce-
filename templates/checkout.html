@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Checkout</h2>
+<div class="row">
+    <div class="col-md-8">
+        <h4>Shipping Address</h4>
+        <p>{{ current_user.name }}<br>
+        {{ current_user.address }}</p>
+        <a href="{{ url_for('profile') }}" class="btn btn-outline-primary">Update Address</a>
+    </div>
+    <div class="col-md-4">
+        <h4>Order Summary</h4>
+        {% for item in cart_items %}
+        <p>{{ item.product.name }} x {{ item.quantity }} - ${{ "%.2f"|format(item.product.price * item.quantity) }}</p>
+        {% endfor %}
+        <hr>
+        <h5>Total: ${{ "%.2f"|format(total) }}</h5>
+        <form method="POST">
+            <button type="submit" class="btn btn-success w-100">Place Order</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

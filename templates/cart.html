@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your Cart</h2>
+{% if cart_items %}
+<div class="table-responsive">
+    <form method="POST">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>${{ "%.2f"|format(item.product.price) }}</td>
+                <td><input type="number" name="quantity_{{ item.product.id }}" value="{{ item.quantity }}" min="1" class="form-control w-25"></td>
+                <td>${{ "%.2f"|format(item.product.price * item.quantity) }}</td>
+                <td>
+                    <button type="submit" name="remove" value="{{ item.product.id }}" class="btn btn-danger btn-sm">Remove</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="submit" name="update" value="1" class="btn btn-primary me-2">Update Cart</button>
+        <a href="{{ url_for('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+    </div>
+    </form>
+</div>
+<div class="text-end">
+    <h4>Total: ${{ "%.2f"|format(total) }}</h4>
+</div>
+{% else %}
+<p>Your cart is empty. <a href="{{ url_for('home') }}">Continue shopping</a></p>
+{% endif %}
+{% endblock %}
